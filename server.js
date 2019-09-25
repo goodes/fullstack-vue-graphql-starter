@@ -1,41 +1,37 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
+const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
-const todos = [
-  { task: 'Wash Car', completed: false },
-  { task: 'Clean room', completed: true }
-];
+// import typedefs and resolvers
+const filePath = path.join(__dirname, 'typeDefs.gql');
+const typeDefs = fs.readFileSync(filePath, 'utf-8');
+const resolvers = require('./resolvers');
 
-const typeDefs = gql`
-  type Todo {
-    task: String
-    completed: Boolean
-  }
+// import Environment
+require('dotenv').config({ path: 'variables.env' });
+const User = require('./models/User');
+const Post = require('./models/Post');
 
-  type Query {
-    getTodos: [Todo]
-  }
+// Connect to mLab
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log(`DB connected`);
+  })
+  .catch(err => console.error(err));
 
-  type Mutation {
-    addTodo(task: String, completed: Boolean): Todo
-  }
-`;
-
-const resolvers = {
-  Query: {
-    getTodos: () => todos
-  },
-  Mutation: {
-    addTodo: (_, { task, completed }) => {
-      //   const todo = { task: task, completed: completed };
-      const todo = { task, completed };
-      todos.push(todo);
-      return todo;
-    }
-  }
-};
+// Create Apollo/Graphql server
 const server = new ApolloServer({
-  typeDefs, // typeDefs: typeDefs,
-  resolvers // resolvers: resolvers
+  typeDefs,
+  resolvers,
+  context: {
+    User,
+    Post
+  }
 });
 
 server.listen(4500).then(({ url }) => {
