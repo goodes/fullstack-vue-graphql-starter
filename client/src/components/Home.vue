@@ -53,6 +53,7 @@ export default {
   }
 };
 </script>
+
 <style>
 #carousel__title {
   position: absolute;
