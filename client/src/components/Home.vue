@@ -1,12 +1,37 @@
 <template>
   <v-container>
     <h1>Home</h1>
-    <v-btn color="error">Button</v-btn>
+    <ul
+      v-for="post in getPosts"
+      :key="post._id"
+    >
+      <li>
+        {{ post.title }}
+        {{ post.imageUrl }}
+        {{ post.description }}
+      </li>
+    </ul>
   </v-container>
 </template>
 
 <script>
+import { gql } from "apollo-boost";
+
 export default {
-  name: "home"
+  name: "home",
+  apollo: {
+    getPosts: {
+      query: gql`
+        query {
+          getPosts {
+            _id
+            title
+            imageUrl
+            description
+          }
+        }
+      `
+    }
+  }
 };
 </script>

@@ -31,8 +31,22 @@ const server = new ApolloServer({
   context: {
     User,
     Post
-  }
+  },
+  extensions: [() => new BasicLogging()]
 });
+
+class BasicLogging {
+  requestDidStart({ queryString, parsedQuery, variables }) {
+    console.log('request');
+    // const query = queryString || print(parsedQuery);
+    // console.log(query);
+    // console.log(variables);
+  }
+
+  willSendResponse({ graphqlResponse }) {
+    // console.log(JSON.stringify(graphqlResponse, null, 2));
+  }
+}
 
 server.listen(4500).then(({ url }) => {
   console.log(`Server listening ${url}`);
