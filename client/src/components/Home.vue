@@ -1,9 +1,23 @@
 
 <template>
   <v-container text-center>
+    <v-layout row>
+      <v-dialog v-model="loading" persistent fullscreen>
+        <v-container fill-height>
+          <v-layout row justify-center align-center>
+            <v-progress-circular
+              indeterminate
+              :size="70"
+              :width="7"
+              color="secondary"
+            ></v-progress-circular>
+          </v-layout>
+        </v-container>
+      </v-dialog>
+    </v-layout>
     <v-flex xs12>
       <v-carousel
-        v-if="posts.length > 0"
+        v-if="!loading && posts.length > 0"
         v-bind="{ cycle: true }"
         interval="3000"
       >
@@ -29,6 +43,9 @@ export default {
   computed: {
     posts() {
       return this.$store.getters.posts;
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   },
   methods: {
