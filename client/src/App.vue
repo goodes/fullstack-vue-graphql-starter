@@ -74,7 +74,7 @@
       <!-- Horizonatal Navbar Links -->
       <v-toolbar-items class=" hidden-xs-only">
         <v-btn
-          flat
+          text
           color="primary"
           v-for="item in horizontalNavItems"
           :key="item.title"

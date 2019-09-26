@@ -21,7 +21,7 @@ const defaultClient = new ApolloClient({
 const apolloProvider = new VueApollo({ defaultClient });
 
 new Vue({
-  provide: apolloProvider.provide(),
+  apolloProvider: apolloProvider,
   router,
   store,
   vuetify,
