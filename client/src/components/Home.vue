@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "home",
   // execute on page load
@@ -41,12 +43,7 @@ export default {
     this.handleGetCarouselPosts();
   },
   computed: {
-    posts() {
-      return this.$store.getters.posts;
-    },
-    loading() {
-      return this.$store.getters.loading;
-    }
+    ...mapGetters(["loading", "posts"])
   },
   methods: {
     handleGetCarouselPosts() {
