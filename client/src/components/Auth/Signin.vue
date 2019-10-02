@@ -50,7 +50,7 @@
                 :loading="loading"
                 color="accent"
                 type="submit"
-                :disabled="!isFormValid"
+                :disabled="!isFormValid || loading"
                 ><span slot="loader" class="custom-loader">
                   <v-icon light>mdi-cached</v-icon> </span
                 >Signin</v-btn
@@ -85,13 +85,13 @@ export default {
         username => !!username || "Username is required",
         // length < 10
         username =>
-          username.length < 10 || "Username must be then less characters"
+          username.length < 10 || "Username must be less then 10 characters"
       ],
       passwordRules: [
         password => !!password || "Password is required",
         // length < 10
         password =>
-          password.length >= 4 || "Password must be atleat 4 characters"
+          password.length >= 4 || "Password must be at least 4 characters"
       ]
     };
   },

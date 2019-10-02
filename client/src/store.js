@@ -3,7 +3,12 @@ import Vuex from 'vuex';
 import router from './router';
 
 import { defaultClient as apolloClient } from './main';
-import { GET_POSTS, SIGNIN_USER, GET_CURRENT_USER } from './queries';
+import {
+  GET_POSTS,
+  SIGNIN_USER,
+  GET_CURRENT_USER,
+  SIGNUP_USER
+} from './queries';
 
 Vue.use(Vuex);
 
@@ -70,12 +75,35 @@ export default new Vuex.Store({
         });
       // use ApolloClient to fire getPosts query
     },
+    signupUser: ({ commit }, payload) => {
+      // reset any existing errors
+      commit('clearError');
+      // incase token is bad
+      commit('setLoading', true);
+
+      apolloClient
+        .mutate({
+          mutation: SIGNUP_USER,
+          variables: payload
+        })
+        .then(({ data }) => {
+          commit('setLoading', false);
+
+          localStorage.setItem('token', data.signupUser.token);
+          // to make sure that cereated method is run we will refresh the page
+          router.go(); // this will refresh the page
+        })
+        .catch(err => {
+          commit('setLoading', false);
+
+          commit('setError', err);
+          // console.error(err);
+        });
+    },
     signinUser: ({ commit }, payload) => {
       // reset any existing errors
       commit('clearError');
-      commit('clearError');
       // incase token is bad
-      localStorage.setItem('token', '');
       commit('setLoading', true);
 
       apolloClient
