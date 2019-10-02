@@ -61,6 +61,8 @@ export default new Vuex.Store({
       // use ApolloClient to fire getPosts query
     },
     signinUser: ({ commit }, payload) => {
+      // incase token is bad
+      localStorage.setItem('token', '');
       apolloClient
         .mutate({
           mutation: SIGNIN_USER,
