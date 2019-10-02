@@ -25,6 +25,13 @@
             {{ item.title }}
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item v-if="user">
+          <v-list-item-action>
+            <v-icon class="hidden-sm-only">mdi-exit-to-app</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>Signout</v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -60,6 +67,19 @@
           <v-icon left class="hidden-sm-only">{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
+
+        <!-- profile button  -->
+        <v-btn text to="/profile" v-if="user">
+          <v-icon class="hidden-sm-only" left> mdi-account-box</v-icon>
+          <v-badge right color="blue darken-2">
+            <!-- <span slot="badge">1</span> -->
+            Profile
+          </v-badge>
+        </v-btn>
+        <v-btn text v-if="user">
+          <v-icon class="hidden-sm-only" left>mdi-exit-to-app</v-icon>
+          Signout
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -74,6 +94,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "App",
   data() {
@@ -82,19 +104,36 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["user"]),
     horizontalNavItems() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open", title: "Sign In ", link: "/signin" },
         { icon: "mdi-pencil", title: "Sign Up ", link: "/signup" }
       ];
+      if (this.user) {
+        items = [
+          { icon: "mdi-chat", title: "Posts", link: "/posts" }
+          // { icon: "mdi-star-circle", title: "Create Post", link: "/post/add" },
+          // { icon: "mdi-account-box", title: "Profile", link: "/profile" }
+        ];
+      }
+      return items;
     },
     sideNavItems() {
-      return [
+      let items = [
         { icon: "mdi-chat", title: "Posts", link: "/posts" },
         { icon: "mdi-lock-open", title: "Sign In ", link: "/signin" },
         { icon: "mdi-pencil", title: "Sign Up ", link: "/signup" }
       ];
+      if (this.user) {
+        items = [
+          { icon: "mdi-chat", title: "Posts", link: "/posts" },
+          { icon: "mdi-star-circle", title: "Create Post", link: "/post/add" },
+          { icon: "mdi-account-box", title: "Profile", link: "/profile" }
+        ];
+      }
+      return items;
     }
   },
   methods: {
