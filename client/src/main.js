@@ -40,13 +40,20 @@ export const defaultClient = new ApolloClient({
       }
     });
   },
-  onError: ({ graphqlErrors, networkError }) => {
+  onError: ({ graphQLErrors, networkError }) => {
     if (networkError) {
       console.log('networkError', networkError);
     }
-    if (graphqlErrors) {
-      for (let err of graphqlErrors) {
-        console.dir(err);
+    if (graphQLErrors) {
+      console.error('[graphqlErrors]');
+      for (let err of graphQLErrors) {
+        if (err.name === 'AuthenticationError') {
+          // set auth error in state (to show in snackbar)
+          store.commit('setAuthError', err);
+          store.dispatch('signoutUser');
+        } else {
+          console.dir(err);
+        }
       }
     }
   }

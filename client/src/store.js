@@ -12,7 +12,8 @@ export default new Vuex.Store({
     posts: [],
     user: null,
     error: null,
-    loading: false
+    loading: false,
+    authError: null
   },
   mutations: {
     setPosts: (state, payload) => {
@@ -28,6 +29,10 @@ export default new Vuex.Store({
     clearError: state => (state.error = null),
     setError: (state, payload) => {
       state.error = payload;
+    },
+    clearAuthError: state => (state.authError = null),
+    setAuthError: (state, payload) => {
+      state.authError = payload;
     }
   },
   actions: {
@@ -67,6 +72,7 @@ export default new Vuex.Store({
     },
     signinUser: ({ commit }, payload) => {
       // reset any existing errors
+      commit('clearError');
       commit('clearError');
       // incase token is bad
       localStorage.setItem('token', '');
@@ -109,6 +115,7 @@ export default new Vuex.Store({
     posts: state => state.posts,
     loading: state => state.loading,
     user: state => state.user,
-    error: state => state.error
+    error: state => state.error,
+    authError: state => state.authError
   }
 });
