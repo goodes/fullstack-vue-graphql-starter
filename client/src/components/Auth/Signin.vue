@@ -17,10 +17,17 @@
     <!-- Signin Form -->
     <v-flex xs512 sm6 offset-sm3 align-center>
       <v-card color="secondary" dark>
-        <v-form @submit.prevent="handleSigninUser">
+        <!-- lazily set the valid of isFormValid through lazy-validation -->
+        <v-form
+          @submit.prevent="handleSigninUser"
+          v-model="isFormValid"
+          lazy-validation
+          ref="form"
+        >
           <v-card-text>
             <v-text-field
               v-model="username"
+              :rules="usernameRules"
               prepend-icon="mdi-face"
               label="Username"
               type="text"
@@ -30,6 +37,7 @@
 
             <v-text-field
               v-model="password"
+              :rules="passwordRules"
               prepend-icon="mdi-puzzle"
               label="Password"
               type="password"
@@ -38,7 +46,11 @@
             >
             </v-text-field>
             <v-row class="justify-center">
-              <v-btn :loading="loading" color="accent" type="submit"
+              <v-btn
+                :loading="loading"
+                color="accent"
+                type="submit"
+                :disabled="!isFormValid"
                 ><span slot="loader" class="custom-loader">
                   <v-icon light>mdi-cached</v-icon> </span
                 >Signin</v-btn
@@ -65,8 +77,22 @@ export default {
   name: "Signin",
   data() {
     return {
+      isFormValid: true,
       username: "",
-      password: ""
+      password: "",
+      usernameRules: [
+        // check is userame is defined
+        username => !!username || "Username is required",
+        // length < 10
+        username =>
+          username.length < 10 || "Username must be then less characters"
+      ],
+      passwordRules: [
+        password => !!password || "Password is required",
+        // length < 10
+        password =>
+          password.length >= 4 || "Password must be atleat 4 characters"
+      ]
     };
   },
   computed: {
@@ -83,10 +109,14 @@ export default {
   },
   methods: {
     handleSigninUser() {
-      this.$store.dispatch("signinUser", {
-        username: this.username,
-        password: this.password
-      });
+      // because we did <v-form v-model="isFormValid" lazy-validation ref="form" ...>
+      // we can now access the form and validate it
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("signinUser", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   }
 };
