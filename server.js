@@ -28,8 +28,7 @@ mongoose
 const getUser = token => {
   if (token) {
     try {
-      let user = jwt.verify(token, process.env.SECRET);
-      console.log(user);
+      return jwt.verify(token, process.env.SECRET);
     } catch (err) {
       console.error(err);
       throw new AuthenticationError(
