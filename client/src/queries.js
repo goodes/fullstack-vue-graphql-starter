@@ -13,3 +13,9 @@ export const GET_POSTS = gql`
     }
   }
 `;
+
+/* User Queries */
+
+/* Posts Mutations */
+
+/* User Mutations */
