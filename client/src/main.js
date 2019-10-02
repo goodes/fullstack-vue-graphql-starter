@@ -8,6 +8,11 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'vuetify/dist/vuetify.min.css';
 
+import FormAlert from './components/Shared/FormAlert';
+
+// Register a global component
+Vue.component('form-alert', FormAlert);
+
 Vue.config.productionTip = false;
 
 import ApolloClient from 'apollo-boost';

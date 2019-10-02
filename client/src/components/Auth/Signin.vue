@@ -6,6 +6,14 @@
         <h1>Welcome Back</h1>
       </v-flex>
     </v-row>
+
+    <!-- Error Alert -->
+    <v-layout row wrap v-if="error">
+      <v-flex xs512 sm6 offset-sm3>
+        <form-alert :message="error.message"></form-alert>
+      </v-flex>
+    </v-layout>
+
     <!-- Signin Form -->
     <v-flex xs512 sm6 offset-sm3 align-center>
       <v-card color="secondary" dark>
@@ -58,7 +66,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "error"])
   },
   watch: {
     user(value) {
