@@ -38,7 +38,11 @@
             >
             </v-text-field>
             <v-row class="justify-center">
-              <v-btn color="accent" type="submit">Signin</v-btn>
+              <v-btn :loading="loading" color="accent" type="submit"
+                ><span slot="loader" class="custom-loader">
+                  <v-icon light>mdi-cached</v-icon> </span
+                >Signin</v-btn
+              >
             </v-row>
             <v-row class="justify-center">
               <h4>
@@ -66,7 +70,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["user", "error"])
+    ...mapGetters(["user", "error", "loading"])
   },
   watch: {
     user(value) {
@@ -87,3 +91,42 @@ export default {
   }
 };
 </script>
+
+<style>
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

@@ -70,17 +70,23 @@ export default new Vuex.Store({
       commit('clearError');
       // incase token is bad
       localStorage.setItem('token', '');
+      commit('setLoading', true);
+
       apolloClient
         .mutate({
           mutation: SIGNIN_USER,
           variables: payload
         })
         .then(({ data }) => {
+          commit('setLoading', false);
+
           localStorage.setItem('token', data.signinUser.token);
           // to make sure that cereated method is run we will refresh the page
           router.go(); // this will refresh the page
         })
         .catch(err => {
+          commit('setLoading', false);
+
           commit('setError', err);
           // console.error(err);
         });
